@@ -62,7 +62,7 @@ def getAnswer():
     data = request.get_json()
     genQA_flag = data["use_ans_extender"]
     start_time = time.time()
-    for url in list(mg.search_url(query=data["question"]))[:1]:
+    for url in list(mg.search_url(query=data["question"])):
         result = trafilatura.extract(trafilatura.fetch_url(url))
         payload = {"question": data["question"],
                    "input_context": result, }
