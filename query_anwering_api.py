@@ -37,7 +37,7 @@ headers = {
 
 
 @app.route("/query_answer_restricted", methods=["POST"])
-def getAnswer():
+def getRestrictedAnswer():
     data = request.get_json()
     genQA_flag = data["use_ans_extender"]
     start_time = time.time()
