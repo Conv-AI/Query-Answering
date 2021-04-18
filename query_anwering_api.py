@@ -42,7 +42,7 @@ def getAnswer():
     start_time = time.time()
     results = []
     [results.append(trafilatura.extract(trafilatura.fetch_url(url)))
-     for url in mg.search_url(query=data["question"])[:5]]
+     for url in mg.search_url(query=data["question"])[:1]]
     for pageData in results:
         payload = {"question": data["question"],
                    "input_context": pageData, "use_ans_extender": genQA_flag}
