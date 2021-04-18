@@ -38,13 +38,14 @@ headers = {
 @app.route("/query_answer", methods=["POST"])
 def getAnswer():
     data = request.get_json()
+    genQA_flag = data["use_ans_extender"]
     start_time = time.time()
     results = []
     [results.append(trafilatura.extract(trafilatura.fetch_url(url)))
-     for url in mg.search_url(query=data["question"])]
+     for url in mg.search_url(query=data["question"])[:5]]
     for pageData in results:
         payload = {"question": data["question"],
-                   "input_context": pageData, "use_ans_extender": True}
+                   "input_context": pageData, "use_ans_extender": genQA_flag}
         response = requests.request(
             "POST", qa_url, headers=headers, json=payload)
         if(len(response.json()["result"]) > 0):
