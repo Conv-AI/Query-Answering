@@ -30,12 +30,13 @@ PROXIES2 = None
 mg = MagicGoogle(PROXIES2)
 data = []
 qa_url = "http://api.convai.com/qa_api"
+genqa_url = "http://api.convai.com/gen_qa"
 headers = {
     "Content-Type": "application/json"
 }
 
 
-@app.route("/query_answer", methods=["POST"])
+@app.route("/query_answer_restricted", methods=["POST"])
 def getAnswer():
     data = request.get_json()
     genQA_flag = data["use_ans_extender"]
@@ -48,8 +49,33 @@ def getAnswer():
                    "input_context": pageData, "use_ans_extender": genQA_flag}
         response = requests.request(
             "POST", qa_url, headers=headers, json=payload)
-        if(len(response.json()["result"]) > 0):
+        # response  = response.json()
+        if(len(response["result"]) > 0):
             print("Time:", (time.time() - start_time))
+            return json.dumps(response.json())
+
+    return (json.dumps({"result": "", "context": "No possible context for the given query", "p": 1.0}))
+
+
+@app.route("/query_answer", methods=["POST"])
+def getAnswer():
+    data = request.get_json()
+    genQA_flag = data["use_ans_extender"]
+    start_time = time.time()
+    for url in list(mg.search_url(query=data["question"]))[:1]:
+        result = trafilatura.extract(trafilatura.fetch_url(url))
+        payload = {"question": data["question"],
+                   "input_context": result, }
+        response = requests.request(
+            "POST", qa_url, headers=headers, json=payload)
+        response = response.json()
+        if len(response["result"]) > 0:
+            payload = {
+                "question": data["question"],
+                "input_context": response["result"]
+            }
+            response = requests.request(
+                "POST", genqa_url, headers=headers, json=payload)
             return json.dumps(response.json())
 
     return (json.dumps({"result": "", "context": "No possible context for the given query", "p": 1.0}))
