@@ -29,7 +29,7 @@ PROXIES2 = None
 # Or MagicGoogle()
 mg = MagicGoogle(PROXIES2)
 data = []
-url = "http://api.convai.com/qa_api"
+qa_url = "http://api.convai.com/qa_api"
 headers = {
     "Content-Type": "application/json"
 }
@@ -45,7 +45,8 @@ def getAnswer():
     for pageData in results:
         payload = {"question": data["question"],
                    "input_context": pageData, "use_ans_extender": True}
-        response = requests.request("POST", url, headers=headers, json=payload)
+        response = requests.request(
+            "POST", qa_url, headers=headers, json=payload)
         if(len(response.json()["result"]) > 0):
             print("Time:", (time.time() - start_time))
             return json.dumps(response.json())
