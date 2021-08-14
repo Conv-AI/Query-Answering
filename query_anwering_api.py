@@ -78,7 +78,7 @@ def getAnswer():
                 "POST", genqa_url, headers=headers, json=payload, verify=False)
             return json.dumps(response.json())
 
-    return (json.dumps({"result": "", "context": "No possible context for the given query", "p": 1.0}))
+    return (json.dumps({"result": "Sorry. I don't have an answer to that.", "context": "No possible context for the given query", "p": 1.0}))
 
 
 if __name__ == "__main__":
