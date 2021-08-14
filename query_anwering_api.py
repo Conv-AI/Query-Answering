@@ -29,8 +29,8 @@ PROXIES2 = None
 # Or MagicGoogle()
 mg = MagicGoogle(PROXIES2)
 data = []
-qa_url = "http://api.convai.com/qa_api"
-genqa_url = "http://api.convai.com/gen_qa"
+qa_url = "https://api.convai.com/qa_api"
+genqa_url = "https://api.convai.com/gen_qa"
 headers = {
     "Content-Type": "application/json"
 }
