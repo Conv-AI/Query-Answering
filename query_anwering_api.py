@@ -67,7 +67,7 @@ def getAnswer():
         payload = {"question": data["question"],
                    "input_context": result, }
         response = requests.request(
-            "POST", qa_url, headers=headers, json=payload, verify="False")
+            "POST", qa_url, headers=headers, json=payload, verify=False)
         response = response.json()
         if len(response["result"]) > 0:
             payload = {
@@ -75,7 +75,7 @@ def getAnswer():
                 "input_context": response["result"]
             }
             response = requests.request(
-                "POST", genqa_url, headers=headers, json=payload, verify="False")
+                "POST", genqa_url, headers=headers, json=payload, verify=False)
             return json.dumps(response.json())
 
     return (json.dumps({"result": "", "context": "No possible context for the given query", "p": 1.0}))
